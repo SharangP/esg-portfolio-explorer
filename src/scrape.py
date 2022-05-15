@@ -139,9 +139,6 @@ def get_esg_info_from_parser(parser, url):
         errors.append(e)
 
     try:
-        # ipdb.set_trace()
-        # if 'VDIGX' in url:
-        #     raise Exception("blah")
         esg_info[EsgColumns.FossilFuelInvolvement.value] = parser.find(
             'div', {'class': class_fossil_fuel_involvement}
             ).find('span', {'class': class_carbon_metric_span_text}).getText().strip()
@@ -205,10 +202,8 @@ if __name__ == '__main__':
     portfolio = portfolio[portfolio['ticker'].notna()]
 
     with chrome_driver() as driver:
-        # ipdb.set_trace()
         esg_info = portfolio.apply(lambda x: get_esg_info_dict(driver, x), axis=1)
         esg_info_df = pd.DataFrame(esg_info.tolist(), columns=EsgColumns.getAll())
-        # ipdb.set_trace()
         for column in EsgColumns.getAll():
             portfolio[column] = esg_info_df[column]
 
